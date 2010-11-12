@@ -1,11 +1,12 @@
-History.txt
 Manifest.txt
-PostInstall.txt
 README.rdoc
 Rakefile
 lib/celerb.rb
-script/console
-script/destroy
-script/generate
+lib/celerb/task.rb
+lib/celerb/task_proto.rb
+lib/celerb/task_publisher.rb
 test/test_celerb.rb
 test/test_helper.rb
+test/thumbTask.pb.rb
+test/thumbTask.proto
+test/vleugel.kmz
