@@ -1,0 +1,19 @@
+package floorplanner;
+
+message ThumbTask {
+
+    enum AssetType {
+        DAE = 0;
+        SWF = 1;
+    }
+
+    required string resultPath = 1;
+    required AssetType type = 2;
+    required bytes asset = 3;
+    repeated ThumbStyle styles = 4;
+}
+
+message ThumbStyle {
+    required string name = 1;
+    required int32 size = 2;
+}

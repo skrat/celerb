@@ -1,0 +1,11 @@
+History.txt
+Manifest.txt
+PostInstall.txt
+README.rdoc
+Rakefile
+lib/celerb.rb
+script/console
+script/destroy
+script/generate
+test/test_celerb.rb
+test/test_helper.rb
