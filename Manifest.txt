@@ -6,6 +6,7 @@ lib/celerb.rb
 lib/celerb/task.rb
 lib/celerb/task_publisher.rb
 lib/celerb/result_consumer.rb
+lib/uuid.rb
 test/test_celerb.rb
 test/test_helper.rb
 test/thumbTask.pb.rb
