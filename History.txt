@@ -1,0 +1,9 @@
+=== 0.0.2 / 2010-11-13
+
+* subscribes to celery results
+ 
+=== 0.0.1 / 2010-11-12
+
+* initial release
+* can submit tasks to celery
+ 

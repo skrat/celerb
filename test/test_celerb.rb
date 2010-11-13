@@ -16,16 +16,19 @@ class TestCelerb < Test::Unit::TestCase
   def test_task_class
     AMQP.run(TEST_CELERY[:AMQP]) do
       Celerb::TaskPublisher.connect(TEST_CELERY)
+      asset = open(File.join(File.dirname(__FILE__), 'vleugel.kmz')).read()
 
       task = Floorplanner::ThumbTask.new(
         :type       => Floorplanner::ThumbTask::AssetType::DAE,
         :resultPath => '/test/thing/%s/some.png',
-        :asset      => open(File.join(File.dirname(__FILE__), 'vleugel.kmz')).read(),
+        :asset      => asset,
         :styles     => [Floorplanner::ThumbStyle.new(
           :name => 'original',
           :size => 512)]
-      )
-      task.delay
+      ).delay.wait do |result|
+        puts result.body
+      end
+      puts "Done..."
     end
   end
 

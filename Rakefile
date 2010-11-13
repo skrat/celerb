@@ -3,7 +3,6 @@ gem 'hoe', '>= 2.1.0'
 require 'hoe'
 require 'fileutils'
 
-Hoe.plugin :newgem
 # Hoe.plugin :website
 # Hoe.plugin :cucumberfeatures
 

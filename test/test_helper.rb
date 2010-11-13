@@ -11,6 +11,7 @@ TEST_CELERY = {
     :vhost => 'geri'
   },
   :key   => 'celery',
-  :exchange => 'celery'
+  :exchange => 'celery',
+  :results  => 'celeryresults'
 }
 

@@ -39,8 +39,11 @@ module Floorplanner
     repeated :ThumbStyle, :styles, 4
 
     include Celerb::Task
-    include Celerb::ProtobufTask
     task_name 'thumbs.tasks.thumb3D'
+
+    def to_celery
+      serialize_to_string
+    end
   end
   class ThumbStyle < ::Protobuf::Message
     defined_in __FILE__

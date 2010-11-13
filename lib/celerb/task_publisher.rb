@@ -4,12 +4,14 @@ module Celerb
     def self.connect(opts)
       @@exchange = MQ.direct(opts[:exchange],
         :key => opts[:key], :durable => true)
+      @@results = ResultConsumer.new(opts)
     end
 
     def self.delay_task(task_name, task_args=[], task_kwargs={},
                    task_id=nil, taskset_id=nil, expires=nil, eta=nil,
                    exchange=nil, exchange_type=nil, retries=0)
-      task_id = task_id || TaskPublisher.uniq_id
+      task_id ||= TaskPublisher.uniq_id
+      @@results.subscribe task_id
       publish({
         :task => task_name,
         :id   => task_id,
@@ -20,6 +22,10 @@ module Celerb
         :expires => expires
       })
       return task_id
+    end
+
+    def self.register_result_handler(task_id, &blk)
+      @@results.register(task_id, &blk)
     end
 
     private
