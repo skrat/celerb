@@ -1,5 +1,7 @@
 = celery for ruby
 
+https://github.com/skrat/celerb
+
 Ruby client library for submitting task to celery queue.
 
 == LICENSE:
