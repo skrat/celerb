@@ -6,7 +6,7 @@ module Celerb
       @handlers = {}
       EM.add_periodic_timer(60) do
         now = Time.now
-        @handlers.delete_if {|h| h[:expires] > now}
+        @handlers.delete_if {|id,h| h[:expires] < now}
       end
     end
 
