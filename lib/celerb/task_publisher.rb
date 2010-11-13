@@ -11,7 +11,6 @@ module Celerb
                    task_id=nil, taskset_id=nil, expires=nil, eta=nil,
                    exchange=nil, exchange_type=nil, retries=0)
       task_id ||= TaskPublisher.uniq_id
-      @@results.subscribe task_id
       publish({
         :task => task_name,
         :id   => task_id,
@@ -24,8 +23,8 @@ module Celerb
       return task_id
     end
 
-    def self.register_result_handler(task_id, &blk)
-      @@results.register(task_id, &blk)
+    def self.register_result_handler(task_id, expiry, &blk)
+      @@results.register(task_id, expiry, &blk)
     end
 
     private
@@ -36,7 +35,6 @@ module Celerb
         :content_encoding => 'binary'
       }
     end
-
 
     def self.uniq_id
       return UUID.create_v4.to_s

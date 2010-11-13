@@ -25,7 +25,7 @@ class TestCelerb < Test::Unit::TestCase
         :styles     => [Floorplanner::ThumbStyle.new(
           :name => 'original',
           :size => 512)]
-      ).delay.wait do |result|
+      ).delay.wait(60) do |result|
         puts result.body
       end
       puts "Done..."
