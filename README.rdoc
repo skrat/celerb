@@ -4,6 +4,29 @@ https://github.com/skrat/celerb
 
 Ruby client library for submitting task to celery queue.
 
+== SYNOPSIS
+
+ class Add
+   include Celerb::Task
+   task_name 'tasks.conquer'
+
+   def initialize(a,b)
+     @a = a
+     @b = b
+   end
+
+   def to_celery
+     [@a,@b]
+   end
+ end
+
+ Add.new(7,6).delay.wait do |result|
+   puts "%s - 7 + 6 = %s" % [Time.now, result.body]
+ end
+
+ puts "%s - Not blocking..." % Time.now
+
+
 == LICENSE:
 
 (The GPL License)
