@@ -4,7 +4,7 @@ module Celerb
     def self.connect(opts)
       @@exchange = MQ.direct(opts[:exchange],
         :key => opts[:key], :durable => true)
-      @@results = ResultConsumer.new(opts)
+      @@results = ResultConsumer.new
     end
 
     def self.delay_task(task_name, task_args=[], task_kwargs={},

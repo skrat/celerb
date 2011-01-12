@@ -1,8 +1,7 @@
 module Celerb
   class ResultConsumer
 
-    def initialize(opts)
-      @exchange = MQ.direct(opts[:results], :auto_delete => true)
+    def initialize
       @handlers = {}
       EM.add_periodic_timer(60) do
         now = Time.now
@@ -22,7 +21,6 @@ module Celerb
       result = Result.new(MessagePack.unpack(body))
       if @handlers.include? result.task_id
         handler = @handlers.delete result.task_id
-        handler[:queue].unsubscribe
         handler[:proc].call result
       end
     end
@@ -35,9 +33,7 @@ module Celerb
     end
 
     def task_id_to_queue(task_id)
-      queue = MQ.queue(task_id_to_queue_name(task_id), :auto_delete => true)
-      queue.bind(@exchange)
-      queue
+      MQ.queue(task_id_to_queue_name(task_id), :auto_delete => true)
     end
 
     def task_id_to_queue_name(task_id)

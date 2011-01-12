@@ -7,7 +7,7 @@ require 'msgpack'
 require 'uuid'
 
 module Celerb
-  VERSION = '0.0.2.4'
+  VERSION = '0.0.2.5'
 end
 
 require 'celerb/task'
