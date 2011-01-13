@@ -22,23 +22,20 @@ module Celerb
       if @handlers.include? result.task_id
         handler = @handlers.delete result.task_id
         handler[:proc].call result
+        handler[:queue].unsubscribe
       end
     end
 
     private
 
     def subscribe(task_id)
-      queue = task_id_to_queue(task_id)
-      queue.subscribe &method(:consume)
+      task_id_to_queue(task_id).subscribe &method(:consume)
     end
 
     def task_id_to_queue(task_id)
-      MQ.queue(task_id_to_queue_name(task_id), :auto_delete => true)
+      MQ.queue(task_id.delete('-'), :auto_delete => true)
     end
 
-    def task_id_to_queue_name(task_id)
-      task_id.gsub('-', '')
-    end
   end
 
   class Result
