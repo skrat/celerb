@@ -22,7 +22,7 @@ module Celerb
         @@name = value
       end
 
-      def delay(*args)
+      def delay(args)
         argz = args.select{|a| !a.kind_of? Hash}
         kwargz = args.select{|a| a.kind_of? Hash}.first
         if argz.length + (kwargz && 1 || 0) > args.length
