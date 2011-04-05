@@ -19,7 +19,7 @@ module Celerb
     module ClassMethods
 
       def task_name(value)
-        @@name = value
+        @name = value
       end
 
       def delay(args)
@@ -29,7 +29,7 @@ module Celerb
           raise "Wrong arguments, must be list followed by optional Hash"
         end
         AsyncResult.new(TaskPublisher.delay_task(
-          @@name, task_args=argz, task_kwargs=kwargz||{}))
+          @name, task_args=argz, task_kwargs=kwargz||{}))
       end
     end
 
