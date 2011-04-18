@@ -2,9 +2,9 @@ module Celerb
   class TaskPublisher
 
     def self.connect(opts)
-      @@exchange = MQ.direct(opts[:exchange],
+      @exchange = MQ.direct(opts[:exchange],
         :key => opts[:key], :durable => true)
-      @@results = ResultConsumer.new
+      @results = ResultConsumer.new
     end
 
     def self.delay_task(task_name, task_args=[], task_kwargs={},
@@ -24,13 +24,13 @@ module Celerb
     end
 
     def self.register_result_handler(task_id, expiry, &blk)
-      @@results.register(task_id, expiry, &blk)
+      @results.register(task_id, expiry, &blk)
     end
 
     private
 
     def self.publish(body)
-      @@exchange.publish MessagePack.pack(body), {
+      @exchange.publish MessagePack.pack(body), {
         :content_type => 'application/x-msgpack',
         :content_encoding => 'binary'
       }
