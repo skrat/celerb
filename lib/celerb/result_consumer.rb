@@ -1,7 +1,8 @@
 module Celerb
   class ResultConsumer
 
-    def initialize
+    def initialize channel
+      @channel = channel
       @handlers = {}
       EM.add_periodic_timer(60) do
         now = Time.now
@@ -33,7 +34,7 @@ module Celerb
     end
 
     def task_id_to_queue(task_id)
-      MQ.queue(task_id.delete('-'), :auto_delete => true)
+      @channel.queue(task_id.delete('-'), :auto_delete => true)
     end
 
   end

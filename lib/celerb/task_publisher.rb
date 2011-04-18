@@ -2,9 +2,10 @@ module Celerb
   class TaskPublisher
 
     def self.connect(opts)
-      @exchange = MQ.direct(opts[:exchange],
+      channel = AMQP::Channel.new
+      @exchange = channel.direct(opts[:exchange],
         :key => opts[:key], :durable => true)
-      @results = ResultConsumer.new
+      @results = ResultConsumer.new(channel)
     end
 
     def self.delay_task(task_name, task_args=[], task_kwargs={},
