@@ -1,8 +1,9 @@
 module Celerb
   class ResultConsumer
 
-    def initialize channel
+    def initialize channel, opts={}
       @channel = channel
+      @options = opts
       @handlers = {}
       EM.add_periodic_timer(60) do
         now = Time.now
@@ -34,7 +35,12 @@ module Celerb
     end
 
     def task_id_to_queue(task_id)
-      @channel.queue(task_id.delete('-'), :auto_delete => true)
+      puts @channel.inspect
+      @channel.queue(task_id.delete('-'), :auto_delete => true,
+        :arguments => (
+          @options[:results_arguments] and
+          Hash[@options[:results_arguments].map{|k, v| [k.to_s, v]}] or
+          {}))
     end
 
   end

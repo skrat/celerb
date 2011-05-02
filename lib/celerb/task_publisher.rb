@@ -5,7 +5,7 @@ module Celerb
       channel = AMQP::Channel.new
       @exchange = channel.direct(opts[:exchange],
         :key => opts[:key], :durable => true)
-      @results = ResultConsumer.new(channel)
+      @results = ResultConsumer.new channel, opts
     end
 
     def self.delay_task(task_name, task_args=[], task_kwargs={},
