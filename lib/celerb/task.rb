@@ -23,13 +23,13 @@ module Celerb
       end
 
       def delay(args)
-        argz = args.select{|a| !a.kind_of? Hash}
-        kwargz = args.select{|a| a.kind_of? Hash}.first
-        if argz.length + (kwargz && 1 || 0) > args.length
-          raise "Wrong arguments, must be list followed by optional Hash"
+        argz = args.dup
+        kwargz = {}
+        if argz.last.kind_of? Hash
+          kwargz = argz.pop
         end
         AsyncResult.new(TaskPublisher.delay_task(
-          @name, task_args=argz, task_kwargs=kwargz||{}))
+          @name, task_args=argz, task_kwargs=kwargz))
       end
     end
 
