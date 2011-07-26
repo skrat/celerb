@@ -4,11 +4,12 @@ module Celerb
 
     def self.included(base)
       base.extend ClassMethods
+      base.send :attr_accessor, :queue
     end
 
     # Sends task to celery worker
     def delay
-      self.class.delay self.to_celery
+      self.class.delay self.queue, self.to_celery
     end
 
     # Should return valid arguments for task specified by #task_name
@@ -22,14 +23,14 @@ module Celerb
         @name = value
       end
 
-      def delay(args)
+      def delay(queue, args)
         argz = args.dup
         kwargz = {}
         if argz.last.kind_of? Hash
           kwargz = argz.pop
         end
         AsyncResult.new(TaskPublisher.delay_task(
-          @name, task_args=argz, task_kwargs=kwargz))
+          queue, @name, task_args=argz, task_kwargs=kwargz))
       end
     end
 

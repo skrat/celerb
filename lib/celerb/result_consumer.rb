@@ -35,7 +35,6 @@ module Celerb
     end
 
     def task_id_to_queue(task_id)
-      puts @channel.inspect
       @channel.queue(task_id.delete('-'), :auto_delete => true,
         :arguments => (
           @options[:results_arguments] and

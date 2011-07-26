@@ -2,17 +2,17 @@ module Celerb
   class TaskPublisher
 
     def self.connect(opts)
-      channel = AMQP::Channel.new
-      @exchange = channel.direct(opts[:exchange],
+      @channel = AMQP::Channel.new
+      @default_exchange = @channel.direct(opts[:exchange],
         :key => opts[:key], :durable => true)
       @results = ResultConsumer.new channel, opts
     end
 
-    def self.delay_task(task_name, task_args=[], task_kwargs={},
+    def self.delay_task(queue, task_name, task_args=[], task_kwargs={},
                    task_id=nil, taskset_id=nil, expires=nil, eta=nil,
                    exchange=nil, exchange_type=nil, retries=0)
       task_id ||= TaskPublisher.uniq_id
-      publish({
+      publish(queue, {
         :task => task_name,
         :id   => task_id,
         :args => task_args,
@@ -30,8 +30,13 @@ module Celerb
 
     private
 
-    def self.publish(body)
-      @exchange.publish MessagePack.pack(body), {
+    def self.publish(queue, body)
+      exchange = @default_exchange
+      if queue.kind_of? String
+        exchange = @channel.direct(queue, :key => queue,
+          :durable => true)
+      end
+      exchange.publish MessagePack.pack(body), {
         :content_type => 'application/x-msgpack',
         :content_encoding => 'binary'
       }
