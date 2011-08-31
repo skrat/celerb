@@ -1,8 +1,8 @@
 module Celerb
   class TaskPublisher
 
-    def self.connect(opts)
-      @channel = AMQP::Channel.new
+    def self.connect(opts, connection=nil)
+      @channel = AMQP::Channel.new(connection)
       @default_exchange = @channel.direct(opts[:exchange],
         :key => opts[:key], :durable => true)
       @results = ResultConsumer.new @channel, opts

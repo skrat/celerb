@@ -9,7 +9,7 @@ $hoe = Hoe.spec 'celerb' do
   self.developer 'Dusan Maliarik', 'dusan.maliarik@gmail.com'
   self.rubyforge_name = self.name # TODO this is default value
   self.extra_deps = [
-    ['amqp',   '= 0.7.5'],
+    ['amqp',   '= 0.8.0.rc15'],
     ['msgpack','= 0.4.3']
   ]
 end
