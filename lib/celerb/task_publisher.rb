@@ -6,6 +6,7 @@ module Celerb
       @default_exchange = @channel.direct(opts[:exchange],
         :key => opts[:key], :durable => true)
       @results = ResultConsumer.new @channel, opts
+      @opts = opts
     end
 
     def self.delay_task(queue, task_name, task_args=[], task_kwargs={},
@@ -36,7 +37,11 @@ module Celerb
         exchange = @channel.direct(queue, :key => queue,
           :durable => true)
       end
+      if @channel.status != :opened
+        raise Celerb::ChannelClosed, "check broker connection"
+      end
       exchange.publish MessagePack.pack(body), {
+        :routing_key => queue || @opts[:key],
         :content_type => 'application/x-msgpack',
         :content_encoding => 'binary'
       }
@@ -47,4 +52,6 @@ module Celerb
     end
 
   end
+
+  class ChannelClosed < IOError; end
 end
