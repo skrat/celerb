@@ -8,8 +8,8 @@ module Celerb
     end
 
     # Sends task to celery worker
-    def delay
-      self.class.delay self.queue, self.to_celery
+    def delay(q = self.queue)
+      self.class.delay q, self.to_celery
     end
 
     # Should return valid arguments for task specified by #task_name
