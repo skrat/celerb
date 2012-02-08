@@ -1,6 +1,9 @@
 module Celerb
   class TaskPublisher
-    attr_reader :channel
+
+    def self.channel
+      @channel
+    end
 
     def self.connect(opts, connection=nil)
       @channel = AMQP::Channel.new(connection)
